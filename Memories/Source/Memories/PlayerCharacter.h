@@ -6,7 +6,7 @@
 #include "GameFramework/Character.h"
 #include "PlayerCharacter.generated.h"
 
-UCLASS()
+UCLASS(config=Game)
 class MEMORIES_API APlayerCharacter : public ACharacter
 {
 	GENERATED_BODY()
@@ -19,7 +19,21 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	virtual void MoveForward(float Value);
+
+	virtual void MoveRight(float Value);
+
+	virtual void LookupRate(float Rate);
+
+	virtual void RotateCamera(float Rate);
+
 public:	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera)
+	float BaseTurnRate = 0.f;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera)
+	float BaseLookUpRate = 0.f;
+
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
