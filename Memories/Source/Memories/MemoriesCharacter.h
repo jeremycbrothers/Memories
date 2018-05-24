@@ -3,8 +3,72 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Engine/DataTable.h"
 #include "GameFramework/Character.h"
 #include "MemoriesCharacter.generated.h"
+
+USTRUCT(BlueprintType)
+struct FCraftingInfo : public FTableRowBase
+{
+	GENERATED_BODY()
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FName ComponentId;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FName ProductId;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool bDestroyItemA;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool bDestroyItemB;
+};
+
+USTRUCT(BlueprintType)
+struct FInventoryItem : public FTableRowBase
+{
+	GENERATED_BODY()
+
+	// Default item
+	FInventoryItem()
+	{
+		Name = FText::FromString("Item");
+		Action = FText::FromString("Use");
+		Description = FText::FromString("Please enter a description");
+		Value = 10.0f;
+	}
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FName ItemId;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TSubclassOf<class APickupActor> ItemPickup;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FText Name;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FText Action;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float Value;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UTexture2D* Thumbnail;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FText Description;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TArray<FCraftingInfo> CraftCombinations;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool bCanBeUsed;
+
+	bool operator==(const FInventoryItem& Item) const
+	{
+		if (ItemId == Item.ItemId) { return true; }
+		else { return false; }
+	}
+};
 
 UCLASS(config=Game)
 class AMemoriesCharacter : public ACharacter
@@ -21,6 +85,8 @@ class AMemoriesCharacter : public ACharacter
 public:
 	AMemoriesCharacter();
 
+	virtual void Tick(float DeltaTime) override;
+
 	/** Base turn rate, in deg/sec. Other scaling may affect final turn rate. */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Camera)
 	float BaseTurnRate;
@@ -31,8 +97,7 @@ public:
 
 protected:
 
-	/** Resets HMD orientation in VR. */
-	void OnResetVR();
+	void CheckForInteractables();
 
 	/** Called for forwards/backward input */
 	void MoveForward(float Value);
@@ -52,21 +117,20 @@ protected:
 	 */
 	void LookUpAtRate(float Rate);
 
-	/** Handler for when a touch input begins. */
-	void TouchStarted(ETouchIndex::Type FingerIndex, FVector Location);
+	void Run();
 
-	/** Handler for when a touch input stops. */
-	void TouchStopped(ETouchIndex::Type FingerIndex, FVector Location);
+	void StopRunning();
 
-protected:
-	// APawn interface
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-	// End of APawn interface
+
 
 public:
 	/** Returns CameraBoom subobject **/
 	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
 	/** Returns FollowCamera subobject **/
 	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
+
+private:
+	UCharacterMovementComponent* CharacterMovement = GetCharacterMovement();
 };
 

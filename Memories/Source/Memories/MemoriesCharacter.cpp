@@ -1,6 +1,8 @@
 // Copyright 1998-2018 Epic Games, Inc. All Rights Reserved.
 
 #include "MemoriesCharacter.h"
+#include "InteractableActor.h"
+#include "GamePlayController.h"
 #include "HeadMountedDisplayFunctionLibrary.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
@@ -47,6 +49,13 @@ AMemoriesCharacter::AMemoriesCharacter()
 	// are set in the derived blueprint asset named MyCharacter (to avoid direct content references in C++)
 }
 
+void AMemoriesCharacter::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+
+	CheckForInteractables();
+}
+
 //////////////////////////////////////////////////////////////////////////
 // Input
 
@@ -54,8 +63,9 @@ void AMemoriesCharacter::SetupPlayerInputComponent(class UInputComponent* Player
 {
 	// Set up gameplay key bindings
 	check(PlayerInputComponent);
-	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
-	PlayerInputComponent->BindAction("Jump", IE_Released, this, &ACharacter::StopJumping);
+
+	PlayerInputComponent->BindAction("Run", IE_Pressed, this, &AMemoriesCharacter::Run);
+	PlayerInputComponent->BindAction("Run", IE_Released, this, &AMemoriesCharacter::StopRunning);
 
 	PlayerInputComponent->BindAxis("MoveForward", this, &AMemoriesCharacter::MoveForward);
 	PlayerInputComponent->BindAxis("MoveRight", this, &AMemoriesCharacter::MoveRight);
@@ -67,29 +77,6 @@ void AMemoriesCharacter::SetupPlayerInputComponent(class UInputComponent* Player
 	PlayerInputComponent->BindAxis("TurnRate", this, &AMemoriesCharacter::TurnAtRate);
 	PlayerInputComponent->BindAxis("LookUp", this, &APawn::AddControllerPitchInput);
 	PlayerInputComponent->BindAxis("LookUpRate", this, &AMemoriesCharacter::LookUpAtRate);
-
-	// handle touch devices
-	PlayerInputComponent->BindTouch(IE_Pressed, this, &AMemoriesCharacter::TouchStarted);
-	PlayerInputComponent->BindTouch(IE_Released, this, &AMemoriesCharacter::TouchStopped);
-
-	// VR headset functionality
-	PlayerInputComponent->BindAction("ResetVR", IE_Pressed, this, &AMemoriesCharacter::OnResetVR);
-}
-
-
-void AMemoriesCharacter::OnResetVR()
-{
-	UHeadMountedDisplayFunctionLibrary::ResetOrientationAndPosition();
-}
-
-void AMemoriesCharacter::TouchStarted(ETouchIndex::Type FingerIndex, FVector Location)
-{
-		Jump();
-}
-
-void AMemoriesCharacter::TouchStopped(ETouchIndex::Type FingerIndex, FVector Location)
-{
-		StopJumping();
 }
 
 void AMemoriesCharacter::TurnAtRate(float Rate)
@@ -102,6 +89,45 @@ void AMemoriesCharacter::LookUpAtRate(float Rate)
 {
 	// calculate delta for this frame from the rate information
 	AddControllerPitchInput(Rate * BaseLookUpRate * GetWorld()->GetDeltaSeconds());
+}
+
+void AMemoriesCharacter::Run()
+{
+	CharacterMovement->MaxWalkSpeed = 600.0f;
+}
+
+void AMemoriesCharacter::StopRunning()
+{
+	CharacterMovement->MaxWalkSpeed = 150.0f;
+}
+
+void AMemoriesCharacter::CheckForInteractables()
+{
+	FHitResult HitResult;
+	FVector StartTrace = FollowCamera->GetComponentLocation();
+	FVector EndTrace = (FollowCamera->GetForwardVector() * 300.0f) + StartTrace;
+
+	FCollisionQueryParams QueryParams;
+	QueryParams.AddIgnoredActor(this);
+
+	AGamePlayController* Controller = Cast<AGamePlayController>(GetController());
+	if (Controller == nullptr) { return; }
+
+	if (GetWorld()->LineTraceSingleByChannel(
+		HitResult,
+		StartTrace,
+		EndTrace,
+		ECC_Visibility,
+		QueryParams) &&
+		Controller)
+	{
+		if (AInteractableActor* Interactable = Cast<AInteractableActor>(HitResult.GetActor()))
+		{
+			Controller->CurrentInteractable = Interactable;
+			return;
+		}
+	}
+	Controller->CurrentInteractable = nullptr;
 }
 
 void AMemoriesCharacter::MoveForward(float Value)

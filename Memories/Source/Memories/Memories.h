@@ -2,4 +2,11 @@
 
 #pragma once
 
+#ifndef __MEMORIES_H__
+#define __MEMORIES_H__
+
 #include "CoreMinimal.h"
+
+#define COLLISION_INTERACTABLE ECC_GameTraceChannel1;
+
+#endif
