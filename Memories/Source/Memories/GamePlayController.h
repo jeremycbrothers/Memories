@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
+#include "MemoriesCharacter.h"
 #include "GamePlayController.generated.h"
 
 /**
@@ -18,5 +19,14 @@ public:
 	UPROPERTY(BlueprintREadWrite, VisibleAnywhere)
 	class AInteractableActor* CurrentInteractable;
 	
-	
+	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
+	TArray<FInventoryItem> Inventory;
+
+	UFUNCTION(BlueprintCallable, Category = "Utils")
+	void AddItemToInventoryById(FName Id);	
+
+	void Interact();
+
+protected:
+	virtual void SetupInputComponent() override;
 };

@@ -13,8 +13,11 @@ UCLASS()
 class MEMORIES_API AGamePlayGameMode : public AGameMode
 {
 	GENERATED_BODY()
-	
-	
-	
+
+public:
+	class UDataTable* GetItemDb() const { return ItemDb; }
+protected:
+	UPROPERTY(EditDefaultsOnly, Category = "Data Table")
+	class UDataTable* ItemDb;
 	
 };
