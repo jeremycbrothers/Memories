@@ -25,6 +25,7 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Utils")
 	void AddItemToInventoryById(FName Id);	
 
+	UFUNCTION(BlueprintCallable, Category = "Utils")
 	void Interact();
 
 protected:
