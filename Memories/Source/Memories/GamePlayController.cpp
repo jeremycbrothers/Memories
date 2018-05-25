@@ -6,6 +6,7 @@
 #include "MemoriesCharacter.h"
 #include "GamePlayController.h"
 
+/** This is how you can read data from a table and use it in code */
 void AGamePlayController::AddItemToInventoryById(FName Id)
 {
 	AGamePlayGameMode* GameMode = Cast <AGamePlayGameMode>(GetWorld()->GetAuthGameMode());

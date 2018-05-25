@@ -70,42 +70,6 @@ struct FInventoryItem : public FTableRowBase
 	}
 };
 
-USTRUCT(BlueprintType)
-struct FDoor : public FTableRowBase
-{
-	GENERATED_BODY()
-
-		// Default Door
-		FDoor()
-	{
-		Name = FText::FromString("Door");
-		Action = FText::FromString("Open");
-		Description = FText::FromString("Please enter a description");
-		bCanBeOpened = false;
-	}
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		FName DoorId;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		FText Name;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		FText Action;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		FText Description;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		bool bCanBeOpened;
-
-	bool operator==(const FDoor& Door) const
-	{
-		if (DoorId == Door.DoorId) { return true; }
-		else { return false; }
-	}
-};
-
 UCLASS(config=Game)
 class AMemoriesCharacter : public ACharacter
 {

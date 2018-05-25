@@ -4,8 +4,12 @@
 
 ADoorActor::ADoorActor()
 {
+	DoorMessages =
+	{
+		"It's locked.",
+		"I can't get it open.",
+		"I unlocked it."
+	};
 	DoorMesh = CreateDefaultSubobject<UStaticMeshComponent>("DoorMesh");
 	DoorId = FName("Please enter an id");
 }
-
-
