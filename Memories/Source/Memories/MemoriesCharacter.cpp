@@ -105,7 +105,7 @@ void AMemoriesCharacter::CheckForInteractables()
 {
 	FHitResult HitResult;
 	FVector StartTrace = FollowCamera->GetComponentLocation();
-	FVector EndTrace = (FollowCamera->GetForwardVector() * 300.0f) + StartTrace;
+	FVector EndTrace = (FollowCamera->GetForwardVector() * TraceLength) + StartTrace;
 
 	FCollisionQueryParams QueryParams;
 	QueryParams.AddIgnoredActor(this);
