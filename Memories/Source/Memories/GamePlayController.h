@@ -28,6 +28,10 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Utils")
 	void Interact();
 
+	/** 
+		This is a testing function used in to determine outputs recieved from
+		whatever is the current interactable whether it's a door, and item, file, etc.
+	*/
 	UFUNCTION(BlueprintCallable, Category = "Utils")
 		void CanInsertIntoController();
 

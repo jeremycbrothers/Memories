@@ -27,6 +27,8 @@ class MEMORIES_API ADoorActor : public AInteractableActor
 public:
 	ADoorActor();
 
+	UFUNCTION(BlueprintCallable, Category = "Door Stuff")
+		FDoorType GetDoorType() const { return DoorType; }
 protected:
 	UPROPERTY(EditAnywhere)
 		FDoorType DoorType;
@@ -40,6 +42,9 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		FString DoorName;
 
-	UFUNCTION(BlueprintCallable, Category = "Interact")
+	UFUNCTION(BlueprintCallable, Category = "Door Interact")
 		virtual FString GetName() const override { return DoorName; }
+
+	UFUNCTION(BlueprintCallable, Category = "Door Interact")
+		virtual FString GetResultText() const override;
 };

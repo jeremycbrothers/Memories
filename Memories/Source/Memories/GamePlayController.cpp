@@ -36,7 +36,28 @@ void AGamePlayController::CanInsertIntoController()
 
 	if (CurrentInteractable->IsA<ADoorActor>())
 	{
-		UE_LOG(LogTemp, Warning, TEXT("It's A door!"));
+		UE_LOG(LogTemp, Warning, TEXT("It's a door!"));
+		ADoorActor* Door = Cast<ADoorActor>(CurrentInteractable);
+		if (Door)
+		{
+			FDoorType DoorType = Door->GetDoorType();
+			switch (DoorType)
+			{
+			case FDoorType::FDefault :
+				UE_LOG(LogTemp, Warning, TEXT("Default door"));
+				
+				break;
+			case FDoorType::FLocked:
+				UE_LOG(LogTemp, Warning, TEXT("Locked door"));
+				break;
+			case FDoorType::FOpened:
+				UE_LOG(LogTemp, Warning, TEXT("Opened door"));
+				break;
+			case FDoorType::FInaccessable:
+				UE_LOG(LogTemp, Warning, TEXT("Inaccessable door"));
+				break;
+			}
+		}
 
 	}
 }
