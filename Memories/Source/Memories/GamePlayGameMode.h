@@ -18,6 +18,5 @@ public:
 	class UDataTable* GetItemDb() const { return ItemDb; }
 protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Data Table")
-	class UDataTable* ItemDb;
-	
+		class UDataTable* ItemDb;
 };

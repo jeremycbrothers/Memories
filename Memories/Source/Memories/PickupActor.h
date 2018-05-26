@@ -24,4 +24,10 @@ protected:
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FName ItemId;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		FString PickupName;
+
+	UFUNCTION(BlueprintCallable, Category = "Interact")
+		virtual FString GetName() const override { return PickupName; }
 };

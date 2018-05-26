@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "InteractableActor.h"
+#include "Engine/DataTable.h"
 #include "DoorActor.generated.h"
 
 UENUM(BlueprintType)
@@ -35,4 +36,10 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		FName DoorId;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		FString DoorName;
+
+	UFUNCTION(BlueprintCallable, Category = "Interact")
+		virtual FString GetName() const override { return DoorName; }
 };

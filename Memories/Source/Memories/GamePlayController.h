@@ -3,8 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/PlayerController.h"
 #include "MemoriesCharacter.h"
+#include "GameFramework/PlayerController.h"
 #include "GamePlayController.generated.h"
 
 /**
@@ -27,6 +27,9 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Utils")
 	void Interact();
+
+	UFUNCTION(BlueprintCallable, Category = "Utils")
+		void CanInsertIntoController();
 
 protected:
 	virtual void SetupInputComponent() override;

@@ -19,15 +19,16 @@ public:
 	UFUNCTION(BlueprintImplementableEvent)
 	void Interact(APlayerController* Controller);
 
+	UFUNCTION(BlueprintCallable, Category = "Interact")
+		virtual FString GetName() const { return Name; }
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	UFUNCTION(BlueprintCallable, Category = "Pickup")
-	FString GetUseText() const { return FString::Printf(TEXT("%s Press E to %s"), *Name, *Action); }
-private:
 	UPROPERTY(EditDefaultsOnly)
 	FString Name;
+private:
 
 	UPROPERTY(EditDefaultsOnly)
 	FString Action;

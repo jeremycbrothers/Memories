@@ -8,21 +8,6 @@
 #include "MemoriesCharacter.generated.h"
 
 USTRUCT(BlueprintType)
-struct FCraftingInfo : public FTableRowBase
-{
-	GENERATED_BODY()
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	FName ComponentId;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	FName ProductId;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	bool bDestroyItemA;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	bool bDestroyItemB;
-};
-
-USTRUCT(BlueprintType)
 struct FInventoryItem : public FTableRowBase
 {
 	GENERATED_BODY()
@@ -56,9 +41,6 @@ struct FInventoryItem : public FTableRowBase
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FText Description;
-	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	TArray<FCraftingInfo> CraftCombinations;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool bCanBeUsed;

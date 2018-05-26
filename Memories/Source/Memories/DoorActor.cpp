@@ -6,6 +6,5 @@ ADoorActor::ADoorActor()
 {
 	DoorMesh = CreateDefaultSubobject<UStaticMeshComponent>("DoorMesh");
 	DoorId = FName("Please enter an id");
+	DoorName = "Enter a name";
 }
-
-

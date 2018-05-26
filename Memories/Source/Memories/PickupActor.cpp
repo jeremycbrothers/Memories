@@ -6,6 +6,7 @@ APickupActor::APickupActor()
 {
 	PickupMesh = CreateDefaultSubobject<UStaticMeshComponent>("PickupMesh");
 	ItemId = FName("Please enter an id");
+	PickupName = "Please enter a name";
 }
 
 
